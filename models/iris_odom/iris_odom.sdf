@@ -16,11 +16,6 @@
           <izz>5.20833333333e-07</izz>
         </inertia>
       </inertial>
-        <origin xyz="0 0 0" rpy="0 0 0" />
-        <geometry>
-          <cylinder length="0.01" radius="0.007" />
-        </geometry>
-      </collision-->
       <visual name="camera_down_link_visual">
         <pose frame=''>0 0 0 0 1.57079 0</pose>
         <geometry>
