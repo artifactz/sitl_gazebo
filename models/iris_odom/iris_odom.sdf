@@ -6,7 +6,7 @@
     </include>
 
     <!--camera-->
-    <link name="camera_down_link">
+    <link name="camera_link">
       <pose frame=''>0 0 -0.04 3.14159 1.57079 3.14159</pose>
       <inertial> <!-- causes issues when omitted -->
         <mass>0.05</mass>
@@ -16,7 +16,7 @@
           <izz>5.20833333333e-07</izz>
         </inertia>
       </inertial>
-      <visual name="camera_down_link_visual">
+      <visual name="camera_link_visual">
         <pose frame=''>0 0 0 0 1.57079 0</pose>
         <geometry>
           <cylinder>
@@ -31,8 +31,8 @@
           </script>
         </material>
       </visual>
-      <sensor type="camera" name="iris_camera_down">
-        <update_rate>60</update_rate>
+      <sensor type="camera" name="iris_camera">
+        <update_rate>120</update_rate>
         <camera name="head">
           <horizontal_fov>1.7</horizontal_fov>
           <image>
@@ -53,14 +53,14 @@
             <stddev>0.007</stddev>
           </noise>
         </camera>
-        <plugin name="iris_camera_down_controller" filename="libgazebo_ros_camera.so">
+        <plugin name="iris_camera_controller" filename="libgazebo_ros_camera.so">
           <robotNamespace>iris_odom</robotNamespace>
           <alwaysOn>true</alwaysOn>
-          <updateRate>60</updateRate>
+          <updateRate>120</updateRate>
           <cameraName>camera_down</cameraName>
           <imageTopicName>image_raw</imageTopicName>
           <cameraInfoTopicName>camera_info</cameraInfoTopicName>
-          <frameName>camera_down_link</frameName>
+          <frameName>camera_link</frameName>
           <hackBaseline>0.0</hackBaseline>
           <distortionK1>0.0</distortionK1>
           <distortionK2>0.0</distortionK2>
@@ -71,76 +71,19 @@
       </sensor>
     </link>
 
-    <joint name="camera_down_joint" type="fixed">
+    <joint name="camera_joint" type="fixed">
       <parent>iris::base_link</parent>
-      <child>camera_down_link</child>
+      <child>camera_link</child>
     </joint>
 
-    <!--sonar-->
-    <link name="range_down_link">
-      <pose frame=''>0 0.015 -0.04 3.14159 1.57079 3.14159</pose>
-      <inertial> <!-- causes issues when omitted -->
-        <mass>0.05</mass>
-        <inertia>
-          <ixx>2.08333333333e-07</ixx>
-          <iyy>5.20833333333e-07</iyy>
-          <izz>5.20833333333e-07</izz>
-        </inertia>
-      </inertial>
-      <visual name="range_down_link_visual">
-        <pose frame=''>0 0 0 0 1.57079 0</pose>
-        <geometry>
-          <cylinder>
-            <length>0.008</length>
-            <radius>0.004</radius>
-          </cylinder>
-        </geometry>
-        <material>
-          <script>
-            <name>Gazebo/Blue</name>
-            <uri>file://media/materials/scripts/gazebo.material</uri>
-          </script>
-        </material>
-      </visual>
-      <sensor type="ray" name="iris_range_down">
-        <update_rate>10</update_rate>
-        <visualize>true</visualize>
-        <ray>
-          <scan>
-            <horizontal>
-              <samples>1</samples>
-              <resolution>1</resolution>
-              <min_angle>-0</min_angle>
-              <max_angle>0</max_angle>
-            </horizontal>
-          </scan>
-          <range>
-            <min>0.06</min> <!-- do not change (smaller values cause issues) -->
-            <max>35</max>   <!-- do not change (bigger values cause issues) -->
-            <resolution>0.01</resolution>
-          </range>
-          <noise>
-            <type>gaussian</type>
-            <mean>0.0</mean>
-            <stddev>0.01</stddev>
-          </noise>
-        </ray>
-        <plugin name="iris_range_down_controller" filename="libgazebo_ros_range.so">
-          <robotNamespace>iris_odom</robotNamespace>
-          <gaussianNoise>0.005</gaussianNoise>
-          <alwaysOn>true</alwaysOn>
-          <updateRate>10</updateRate>
-          <topicName>range_down</topicName>
-          <frameName>range_down_link</frameName>
-          <fov>0</fov>
-          <radiation>ultrasound</radiation>
-        </plugin>
-      </sensor>
-    </link>
+    <include>
+      <uri>model://sf10a</uri>
+      <pose>0.02 0.02 -0.05 0 0 0</pose>
+    </include>
 
-    <joint name="range_down_joint" type="fixed">
+    <joint name="sf10a_joint" type="fixed">
       <parent>iris::base_link</parent>
-      <child>range_down_link</child>
+      <child>sf10a::link</child>
     </joint>
 
   </model>
